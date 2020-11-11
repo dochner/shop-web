@@ -12,6 +12,7 @@
         <Footer />
       </div>
     </div>
+    <FlashMessage position="right top"></FlashMessage>
   </div>
 </template>
 
@@ -26,6 +27,9 @@ export default {
     Sidebar,
     Footer,
   },
+    created(){
+        document.querySelector("body").style.backgroundColor = "#fff";
+    }
 };
 </script>
     </main>

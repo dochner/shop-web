@@ -31,15 +31,21 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>Shirt</td>
-              <td>Image</td>
+            <tr v-for="(category, index) in categories" :key="index">
+              <td>{{ index + 1 }}</td>
+              <td>{{ category.name }}</td>
+              <td>
+                <img
+                  :src="`${$store.state.serverPath}/storage/${category.image}`"
+                  :alt="category.name"
+                  class="table-image"
+                />
+              </td>
               <td>
                 <button class="btn btn-primary btn-sm">
                   <span class="fa fa-edit"></span>
                 </button>
-                <button class="btn btn-danger btn-sm">
+                <button class="btn btn-danger btn-sm" v-on:click="deleteCategory(category)">
                   <span class="fa fa-trash"></span>
                 </button>
               </td>
@@ -99,22 +105,56 @@
 </template>
 
 <script>
-import func from "../../../vue-temp/vue-editor-bridge";
 import * as categoryService from "../services/category_service";
 export default {
   name: "category",
   data() {
     return {
+      categories: [],
       categoryData: {
-        name: "",
-        image: "",
+        name: '',
+        image: '',
       },
 
       errors: {},
     };
   },
-
+  mounted() {
+    this.loadCategories();
+  },
   methods: {
+    loadCategories: async function () {
+      try {
+        const response = await categoryService.loadCategories();
+        this.categories = response.data.data;
+      } catch (error) {
+        this.flashMessage.error({
+          message: "Some error has occurred, please try again!",
+          time: 5000,
+        });
+      }
+    },
+    deleteCategory: async function(category){
+        if(!window.confirm(`Are you sure you want to delete ${category.name}`)){
+            return;
+        }
+        try {
+            await categoryService.deleteCategory(category.id);
+            this.categories = this.categories.filter(obj => {
+                return obj.id != category.id;
+            });
+
+            this.flashMessage.success({
+                message: 'Category deleted successfully!',
+                time: 5000
+            });
+        } catch (error) {
+            this.flashMessage.error({
+                message: error.response.data.message,
+                time: 5000
+            });
+        }
+    },
     attachImage() {
       this.categoryData.image = this.$refs.newCategoryImage.files[0];
       let reader = new FileReader();
@@ -132,7 +172,7 @@ export default {
       this.$refs.newCategoryModal.hide();
     },
     showNewCategoryModal() {
-      this.$$refs.newCategoryModal.show();
+      this.$refs.newCategoryModal.show();
     },
     createCategory: async function () {
       let formData = new FormData();
@@ -141,13 +181,25 @@ export default {
 
       try {
         const response = await categoryService.createCategory(formData);
+        this.hideNewCategoryModal();
+        this.flashMessage.success({
+          message: "Category created successfully!",
+          time: 5000,
+        });
+        this.categoryData ={
+            name: '',
+            image: ''
+        };
       } catch (error) {
         switch (error.response.status) {
           case 422:
             this.errors = error.response.data.errors;
             break;
           default:
-            alert("some error has occurred");
+            this.flashMessage.error({
+              message: "some error has occurred, please try again!",
+              time: 5000,
+            });
             break;
         }
       }

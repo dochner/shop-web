@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -14,7 +15,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-
+        $categories = Category::orderBy('created_at', 'desc')->paginate(5);
+        return response()->json($categories, 200);
     }
 
     /**
@@ -35,7 +37,26 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|min:3',
+            'image' => 'required|image|mimes:png,jpg,jpeg'
+        ]);
+
+        $category = new Category();
+        $category->name = $request->name;
+
+        $path = $request->file('image')->store('categories_images');
+
+        $category->image = $path;
+
+        if($category->save()){
+            return response()->json($category, 200);
+        } else {
+            return response()->json([
+                'message' => 'Some error has occurred, please try again!',
+                'status_code' => 500
+            ] ,500);
+        }
     }
 
     /**
@@ -80,6 +101,19 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        if($category->delete()){
+            Storage::delete($category->image);
+
+            return response()->json([
+                'message' => 'Category deleted succesfully!',
+                'status_code' => 200
+            ], 200);
+
+            }else{
+                return response()->json([
+                    'message' => 'Some error while deleting category, try again later',
+                    'status_code' => 200
+                ], 500);
+            }
     }
 }

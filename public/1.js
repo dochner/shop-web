@@ -11,8 +11,7 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-!(function webpackMissingModule() { var e = new Error("Cannot find module '../../../vue-temp/vue-editor-bridge'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
-/* harmony import */ var _services_category_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/category_service */ "./resources/js/services/category_service.js");
+/* harmony import */ var _services_category_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../services/category_service */ "./resources/js/services/category_service.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -119,20 +118,119 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "category",
   data: function data() {
     return {
+      categories: [],
       categoryData: {
-        name: "",
-        image: ""
+        name: '',
+        image: ''
       },
       errors: {}
     };
   },
+  mounted: function mounted() {
+    this.loadCategories();
+  },
   methods: {
+    loadCategories: function () {
+      var _loadCategories = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                _context.next = 3;
+                return _services_category_service__WEBPACK_IMPORTED_MODULE_1__["loadCategories"]();
+
+              case 3:
+                response = _context.sent;
+                this.categories = response.data.data;
+                _context.next = 10;
+                break;
+
+              case 7:
+                _context.prev = 7;
+                _context.t0 = _context["catch"](0);
+                this.flashMessage.error({
+                  message: "Some error has occurred, please try again!",
+                  time: 5000
+                });
+
+              case 10:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this, [[0, 7]]);
+      }));
+
+      function loadCategories() {
+        return _loadCategories.apply(this, arguments);
+      }
+
+      return loadCategories;
+    }(),
+    deleteCategory: function () {
+      var _deleteCategory = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(category) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                if (window.confirm("Are you sure you want to delete ".concat(category.name))) {
+                  _context2.next = 2;
+                  break;
+                }
+
+                return _context2.abrupt("return");
+
+              case 2:
+                _context2.prev = 2;
+                _context2.next = 5;
+                return _services_category_service__WEBPACK_IMPORTED_MODULE_1__["deleteCategory"](category.id);
+
+              case 5:
+                this.categories = this.categories.filter(function (obj) {
+                  return obj.id != category.id;
+                });
+                this.flashMessage.success({
+                  message: 'Category deleted successfully!',
+                  time: 5000
+                });
+                _context2.next = 12;
+                break;
+
+              case 9:
+                _context2.prev = 9;
+                _context2.t0 = _context2["catch"](2);
+                this.flashMessage.error({
+                  message: _context2.t0.response.data.message,
+                  time: 5000
+                });
+
+              case 12:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this, [[2, 9]]);
+      }));
+
+      function deleteCategory(_x) {
+        return _deleteCategory.apply(this, arguments);
+      }
+
+      return deleteCategory;
+    }(),
     attachImage: function attachImage() {
       this.categoryData.image = this.$refs.newCategoryImage.files[0];
       var reader = new FileReader();
@@ -145,48 +243,60 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.$refs.newCategoryModal.hide();
     },
     showNewCategoryModal: function showNewCategoryModal() {
-      this.$$refs.newCategoryModal.show();
+      this.$refs.newCategoryModal.show();
     },
     createCategory: function () {
-      var _createCategory = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      var _createCategory = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
         var formData, response;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
           while (1) {
-            switch (_context.prev = _context.next) {
+            switch (_context3.prev = _context3.next) {
               case 0:
                 formData = new FormData();
                 formData.append("name", this.categoryData.name);
                 formData.append("image", this.categoryData.image);
-                _context.prev = 3;
-                _context.next = 6;
-                return _services_category_service__WEBPACK_IMPORTED_MODULE_2__["createCategory"](formData);
+                _context3.prev = 3;
+                _context3.next = 6;
+                return _services_category_service__WEBPACK_IMPORTED_MODULE_1__["createCategory"](formData);
 
               case 6:
-                response = _context.sent;
-                _context.next = 18;
+                response = _context3.sent;
+                this.hideNewCategoryModal();
+                this.flashMessage.success({
+                  message: "Category created successfully!",
+                  time: 5000
+                });
+                this.categoryData = {
+                  name: '',
+                  image: ''
+                };
+                _context3.next = 21;
                 break;
 
-              case 9:
-                _context.prev = 9;
-                _context.t0 = _context["catch"](3);
-                _context.t1 = _context.t0.response.status;
-                _context.next = _context.t1 === 422 ? 14 : 16;
+              case 12:
+                _context3.prev = 12;
+                _context3.t0 = _context3["catch"](3);
+                _context3.t1 = _context3.t0.response.status;
+                _context3.next = _context3.t1 === 422 ? 17 : 19;
                 break;
 
-              case 14:
-                this.errors = _context.t0.response.data.errors;
-                return _context.abrupt("break", 18);
+              case 17:
+                this.errors = _context3.t0.response.data.errors;
+                return _context3.abrupt("break", 21);
 
-              case 16:
-                alert("some error has occurred");
-                return _context.abrupt("break", 18);
+              case 19:
+                this.flashMessage.error({
+                  message: "some error has occurred, please try again!",
+                  time: 5000
+                });
+                return _context3.abrupt("break", 21);
 
-              case 18:
+              case 21:
               case "end":
-                return _context.stop();
+                return _context3.stop();
             }
           }
-        }, _callee, this, [[3, 9]]);
+        }, _callee3, this, [[3, 12]]);
       }));
 
       function createCategory() {
@@ -251,7 +361,53 @@ var render = function() {
           )
         ]),
         _vm._v(" "),
-        _vm._m(1)
+        _c("div", { staticClass: "card-body" }, [
+          _c("table", { staticClass: "table" }, [
+            _vm._m(1),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.categories, function(category, index) {
+                return _c("tr", { key: index }, [
+                  _c("td", [_vm._v(_vm._s(index + 1))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(category.name))]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("img", {
+                      staticClass: "table-image",
+                      attrs: {
+                        src:
+                          _vm.$store.state.serverPath +
+                          "/storage/" +
+                          category.image,
+                        alt: category.name
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._m(2, true),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger btn-sm",
+                        on: {
+                          click: function($event) {
+                            return _vm.deleteCategory(category)
+                          }
+                        }
+                      },
+                      [_c("span", { staticClass: "fa fa-trash" })]
+                    )
+                  ])
+                ])
+              }),
+              0
+            )
+          ])
+        ])
       ]),
       _vm._v(" "),
       _c(
@@ -386,40 +542,24 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-body" }, [
-      _c("table", { staticClass: "table" }, [
-        _c("thead", [
-          _c("tr", [
-            _c("td", [_vm._v("#")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Name")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Image")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Action")])
-          ])
-        ]),
+    return _c("thead", [
+      _c("tr", [
+        _c("td", [_vm._v("#")]),
         _vm._v(" "),
-        _c("tbody", [
-          _c("tr", [
-            _c("td", [_vm._v("1")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Shirt")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Image")]),
-            _vm._v(" "),
-            _c("td", [
-              _c("button", { staticClass: "btn btn-primary btn-sm" }, [
-                _c("span", { staticClass: "fa fa-edit" })
-              ]),
-              _vm._v(" "),
-              _c("button", { staticClass: "btn btn-danger btn-sm" }, [
-                _c("span", { staticClass: "fa fa-trash" })
-              ])
-            ])
-          ])
-        ])
+        _c("td", [_vm._v("Name")]),
+        _vm._v(" "),
+        _c("td", [_vm._v("Image")]),
+        _vm._v(" "),
+        _c("td", [_vm._v("Action")])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("button", { staticClass: "btn btn-primary btn-sm" }, [
+      _c("span", { staticClass: "fa fa-edit" })
     ])
   }
 ]
@@ -433,17 +573,24 @@ render._withStripped = true
 /*!***************************************************!*\
   !*** ./resources/js/services/category_service.js ***!
   \***************************************************/
-/*! exports provided: createCategory */
+/*! exports provided: createCategory, loadCategories, deleteCategory */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createCategory", function() { return createCategory; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadCategories", function() { return loadCategories; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteCategory", function() { return deleteCategory; });
 /* harmony import */ var _http_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./http_service */ "./resources/js/services/http_service.js");
-/* harmony import */ var _http_service__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_http_service__WEBPACK_IMPORTED_MODULE_0__);
 
 function createCategory(data) {
   return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["httpFile"])().post('/categories', data);
+}
+function loadCategories() {
+  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])().get('/categories');
+}
+function deleteCategory(id) {
+  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])()["delete"]("/categories/".concat(id));
 }
 
 /***/ }),
@@ -452,10 +599,31 @@ function createCategory(data) {
 /*!***********************************************!*\
   !*** ./resources/js/services/http_service.js ***!
   \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! exports provided: http, httpFile */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nSyntaxError: /home/lucas/Projetos/shop-web/resources/js/services/http_service.js: 'import' and 'export' may only appear at the top level (10:4)\n\n\u001b[0m \u001b[90m  8 | \u001b[39m\u001b[0m\n\u001b[0m \u001b[90m  9 | \u001b[39m\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 10 | \u001b[39m    \u001b[36mexport\u001b[39m \u001b[36mfunction\u001b[39m httpFile(){\u001b[0m\n\u001b[0m \u001b[90m    | \u001b[39m    \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 11 | \u001b[39m        \u001b[36mreturn\u001b[39m axios\u001b[33m.\u001b[39mcreate({\u001b[0m\n\u001b[0m \u001b[90m 12 | \u001b[39m            baseURL\u001b[33m:\u001b[39m store\u001b[33m.\u001b[39mstate\u001b[33m.\u001b[39mapiURL\u001b[33m,\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 13 | \u001b[39m            headers\u001b[33m:\u001b[39m {\u001b[0m\n    at Parser._raise (/home/lucas/Projetos/shop-web/node_modules/@babel/parser/lib/index.js:790:17)\n    at Parser.raiseWithData (/home/lucas/Projetos/shop-web/node_modules/@babel/parser/lib/index.js:783:17)\n    at Parser.raise (/home/lucas/Projetos/shop-web/node_modules/@babel/parser/lib/index.js:777:17)\n    at Parser.parseStatementContent (/home/lucas/Projetos/shop-web/node_modules/@babel/parser/lib/index.js:11732:18)\n    at Parser.parseStatement (/home/lucas/Projetos/shop-web/node_modules/@babel/parser/lib/index.js:11639:17)\n    at Parser.parseBlockOrModuleBlockBody (/home/lucas/Projetos/shop-web/node_modules/@babel/parser/lib/index.js:12221:25)\n    at Parser.parseBlockBody (/home/lucas/Projetos/shop-web/node_modules/@babel/parser/lib/index.js:12207:10)\n    at Parser.parseBlock (/home/lucas/Projetos/shop-web/node_modules/@babel/parser/lib/index.js:12191:10)\n    at Parser.parseFunctionBody (/home/lucas/Projetos/shop-web/node_modules/@babel/parser/lib/index.js:11184:24)\n    at Parser.parseFunctionBodyAndFinish (/home/lucas/Projetos/shop-web/node_modules/@babel/parser/lib/index.js:11168:10)\n    at /home/lucas/Projetos/shop-web/node_modules/@babel/parser/lib/index.js:12357:12\n    at Parser.withTopicForbiddingContext (/home/lucas/Projetos/shop-web/node_modules/@babel/parser/lib/index.js:11479:14)\n    at Parser.parseFunction (/home/lucas/Projetos/shop-web/node_modules/@babel/parser/lib/index.js:12356:10)\n    at Parser.parseFunctionStatement (/home/lucas/Projetos/shop-web/node_modules/@babel/parser/lib/index.js:11987:17)\n    at Parser.parseStatementContent (/home/lucas/Projetos/shop-web/node_modules/@babel/parser/lib/index.js:11677:21)\n    at Parser.parseStatement (/home/lucas/Projetos/shop-web/node_modules/@babel/parser/lib/index.js:11639:17)\n    at Parser.parseExportDeclaration (/home/lucas/Projetos/shop-web/node_modules/@babel/parser/lib/index.js:12858:17)\n    at Parser.maybeParseExportDeclaration (/home/lucas/Projetos/shop-web/node_modules/@babel/parser/lib/index.js:12814:31)\n    at Parser.parseExport (/home/lucas/Projetos/shop-web/node_modules/@babel/parser/lib/index.js:12752:29)\n    at Parser.parseStatementContent (/home/lucas/Projetos/shop-web/node_modules/@babel/parser/lib/index.js:11745:27)\n    at Parser.parseStatement (/home/lucas/Projetos/shop-web/node_modules/@babel/parser/lib/index.js:11639:17)\n    at Parser.parseBlockOrModuleBlockBody (/home/lucas/Projetos/shop-web/node_modules/@babel/parser/lib/index.js:12221:25)\n    at Parser.parseBlockBody (/home/lucas/Projetos/shop-web/node_modules/@babel/parser/lib/index.js:12207:10)\n    at Parser.parseTopLevel (/home/lucas/Projetos/shop-web/node_modules/@babel/parser/lib/index.js:11570:10)\n    at Parser.parse (/home/lucas/Projetos/shop-web/node_modules/@babel/parser/lib/index.js:13381:10)\n    at parse (/home/lucas/Projetos/shop-web/node_modules/@babel/parser/lib/index.js:13434:38)\n    at parser (/home/lucas/Projetos/shop-web/node_modules/@babel/core/lib/parser/index.js:54:34)\n    at parser.next (<anonymous>)\n    at normalizeFile (/home/lucas/Projetos/shop-web/node_modules/@babel/core/lib/transformation/normalize-file.js:99:38)\n    at normalizeFile.next (<anonymous>)\n    at run (/home/lucas/Projetos/shop-web/node_modules/@babel/core/lib/transformation/index.js:31:50)\n    at run.next (<anonymous>)\n    at Function.transform (/home/lucas/Projetos/shop-web/node_modules/@babel/core/lib/transform.js:27:41)\n    at transform.next (<anonymous>)\n    at step (/home/lucas/Projetos/shop-web/node_modules/gensync/index.js:261:32)\n    at /home/lucas/Projetos/shop-web/node_modules/gensync/index.js:273:13");
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "http", function() { return http; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "httpFile", function() { return httpFile; });
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../store */ "./resources/js/store.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+
+
+function http() {
+  return axios__WEBPACK_IMPORTED_MODULE_1___default.a.create({
+    baseURL: _store__WEBPACK_IMPORTED_MODULE_0__["default"].state.apiURL
+  });
+}
+function httpFile() {
+  return axios__WEBPACK_IMPORTED_MODULE_1___default.a.create({
+    baseURL: _store__WEBPACK_IMPORTED_MODULE_0__["default"].state.apiURL,
+    headers: {
+      "Content-Type": "multipart/form-data"
+    }
+  });
+}
 
 /***/ }),
 

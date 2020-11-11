@@ -14,5 +14,6 @@
     <body>
         <div id="app"></div>
         <script src="{{ asset('js/app.js') }}"></script>
+        <script src="https://kit.fontawesome.com/5c4855d69a.js" crossorigin="anonymous"></script>
     </body>
 </html>

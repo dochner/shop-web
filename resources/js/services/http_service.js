@@ -1,18 +1,17 @@
-import store from '../js/store';
-import axios from 'axios';
+import store from "../store";
+import axios from "axios";
 
-export function http(){
+export function http() {
+    return axios.create({
+        baseURL: store.state.apiURL
+    });
+}
+
+export function httpFile() {
     return axios.create({
         baseURL: store.state.apiURL,
+        headers: {
+            "Content-Type": "multipart/form-data"
+        }
     });
-
-
-    export function httpFile(){
-        return axios.create({
-            baseURL: store.state.apiURL,
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        });
-    }
 }
